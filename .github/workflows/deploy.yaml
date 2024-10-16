@@ -19,10 +19,4 @@ jobs:
       env:
         MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
         MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
-  deploy:
-    uses: ./.github/workflows/reusable-java-deploy.yaml
-    with:
-      java-version: '11'
-      maven-repo-id: 'my-repo'
-      maven-username: ${{ secrets.MAVEN_USERNAME }}
-      maven-password: ${{ secrets.MAVEN_PASSWORD }}
+     
