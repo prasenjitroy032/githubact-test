@@ -18,17 +18,11 @@ jobs:
           echo "Maven Username: ${{ secrets.MAVEN_USERNAME }}"
           echo "Maven Password: ${{ secrets.MAVEN_PASSWORD }}"
 
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Deploy
-        uses: ./.github/workflows/reusable-java-deploy.yaml
-        with:
-          java-version: '11'
-          maven-repo-id: 'my-repo'
-          maven-username: ${{ secrets.MAVEN_USERNAME }}
-          maven-password: ${{ secrets.MAVEN_PASSWORD }}
+  deploy: 
+    uses: ./.github/workflows/reusable-java-deploy.yaml
+    with:
+      java-version: '11'
+      maven-repo-id: 'my-repo'
+    secrets:
+      maven-username: ${{ secrets.MAVEN_USERNAME }}
+      maven-password: ${{ secrets.MAVEN_PASSWORD }}

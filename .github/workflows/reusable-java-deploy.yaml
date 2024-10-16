@@ -10,12 +10,11 @@ on:
       maven-repo-id:
         required: true
         type: string
+    secrets:    
       maven-username:
         required: true
-        type: string
       maven-password:
         required: true
-        type: string
 
 jobs:
   build-and-deploy:
@@ -37,6 +36,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: ${{ inputs.java-version }}
+        distribution: 'temurin'  # Specify the JDK distribution
 
     - name: Set up Maven settings
       run: |
