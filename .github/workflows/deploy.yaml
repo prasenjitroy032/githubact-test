@@ -5,8 +5,20 @@ on:
   push:
     branches:
       - main
+env:
+  MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+  MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}   
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check Secrets
+      run: echo "Secrets accessed successfully!"
+      env:
+        MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
   deploy:
     uses: ./.github/workflows/reusable-java-deploy.yaml
     with:
