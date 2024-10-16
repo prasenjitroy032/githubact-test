@@ -1,0 +1,55 @@
+# .github/workflows/reusable-java-deploy.yml
+name: Reusable Java Application Deployment
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        required: true
+        type: string
+      maven-repo-id:
+        required: true
+        type: string
+      maven-username:
+        required: true
+        type: string
+      maven-password:
+        required: true
+        type: string
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Set up JDK ${{ inputs.java-version }}
+      uses: actions/setup-java@v2
+      with:
+        java-version: ${{ inputs.java-version }}
+
+    - name: Set up Maven settings
+      run: |
+        mkdir -p ~/.m2
+        echo '<settings>
+                <servers>
+                  <server>
+                    <id>${{ inputs.maven-repo-id }}</id>
+                    <username>${{ inputs.maven-username }}</username>
+                    <password>${{ inputs.maven-password }}</password>
+                  </server>
+                </servers>
+              </settings>' > ~/.m2/settings.xml
+
+    - name: Build with Maven
+      run: mvn clean install
